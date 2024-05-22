@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\EmployeeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class Employee extends Authenticatable
 {
@@ -46,5 +49,9 @@ class Employee extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    protected static function newFactory(): Factory
+    {
+        return EmployeeFactory::new();
     }
 }
