@@ -18,9 +18,11 @@
 **Step 2.** install PHP dependencies → `composer install`  
 **Step 3.** create `.env` file using `.env.example` → `cp .env.example .env`  
 **Step 4.** generate an application key → `php artisan key:generate`  
-**Step 5.** run database migrations → `php artisan migrate` (and give _yes_)  
-**Step 6.** serve the application → `php artisan serve`  
-**Step 6.** access the application → go to `http://127.0.0.1:8000`
+**Step 5.** run database migrations → `php artisan migrate` _(and give *yes*)_  
+**Step 6.** seed fake data _(inserts 50 fake data into database)_ → `php artisan db:seed`  
+**Step 7.** serve the application → `php artisan serve`  
+**Step 8.** access the application → go to `http://127.0.0.1:8000`
 
-## instructions 
+## Note
+
 create a account first. then, you can log in using that credentials to user dashboard. also use that same credentials to login as a admin. admin can view number of leaves of each employee, and assign salaray for new employees etc.
