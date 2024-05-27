@@ -26,13 +26,17 @@ class Login extends Component
         ];
 
         if (Auth::attempt($credentials)) {
-            session()->flash('message', 'You have successfully logged in!');
-
-            return $this->redirectRoute('dashboard', navigate: true);
-            // return redirect()->route('livewire.dashboard');
+            $user = Auth::user();
+            if ($user->user_type === 'employee') {
+                session()->flash('message', 'You have successfully logged in!');
+                return redirect()->route('dashboard');
+            } else {
+                Auth::logout();
+                session()->flash('error', 'Access denied. Only employees can log in.');
+            }
+        } else {
+            session()->flash('error', 'Invalid credentials!');
         }
-
-        session()->flash('error', 'Invalid credentials!');
     }
     public function render()
     {

@@ -9,6 +9,8 @@ use App\Livewire\Dashboard;
 use App\Livewire\Logout;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\EmployeeMiddleware; // Import the missing class
+use App\Http\Middleware\AdminMiddleware; // Import the missing class
 
 // Public routes
 
@@ -26,13 +28,15 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/login/admin', AdminLogin::class)->name('adminlogin');
 });
 
-// Authenticated routes
-Route::group(['middleware' => 'auth'], function () {
-    // Route::get('/index', [EmployeeController::class, 'index'])->name('index');
+// Routes for employees
+Route::middleware([EmployeeMiddleware::class])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::resource("/employees", EmployeeController::class);
-    Route::get("/index", AdminLogin::class)->name('index');
-    // Route::post('/logout', Logout::class)->name('logout');
     Route::post('/logout', 'App\Http\Controllers\EmployeeController@logout')->name('logout');
+});
+
+// Routes for admins
+Route::middleware([AdminMiddleware::class])->group(function () {
+    Route::get("/index", AdminLogin::class)->name('index');
+    Route::resource("/employees", EmployeeController::class);
     Route::post('/logout', [AdminLogout::class, 'logout'])->name('logout');
 });

@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Employee;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -15,10 +15,10 @@ class Register extends Component
     #[Validate('required|string|min:3|max:250')]
     public $name;
 
-    #[Validate('required|string|min:3|max:250|unique:employees,username')]
+    #[Validate('required|string|min:3|max:250|unique:users,username')]
     public $username;
 
-    #[Validate('required|email|max:250|unique:employees,email')]
+    #[Validate('required|email|max:250|unique:users,email')]
     public $email;
 
     #[Validate('required|string|min:8|confirmed')]
@@ -30,7 +30,7 @@ class Register extends Component
     {
         $this->validate();
 
-        Employee::create([
+        User::create([
             'name' => $this->name,
             'username' => $this->username,
             'email' => $this->email,

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
+use App\Models\User;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,17 +15,22 @@ class EmployeeSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
     public function run(): void
     {
-        // DB::table('employees')->insert([
-        //     'name' => Str::random(10),
-        //     'username' => Str::random(10),
-        //     'email' => Str::random(10) . '@example.com',
-        //     'password' => Hash::make('password'),
-        //     'leave_count' => rand(2, 5),
-        // ]);
-        Employee::factory()
+        // Create a default admin user
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'username' => 'admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'user_type' => 'admin',
+        ]);
+
+        // Create 50 random users
+        User::factory()
             ->count(50)
             ->create();
     }
+
 }

@@ -34,6 +34,17 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label for="user_type" class="form-label">User Type</label>
+                    <select name="user_type" id="user_type" class="form-control">
+                        <option value="employee" {{ $employee->user_type == 'employee' ? 'selected' : '' }}>Employee
+                        </option>
+                        <option value="admin" {{ $employee->user_type == 'admin' ? 'selected' : '' }}>Admin</option>
+                    </select>
+                    @error('user_type')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label for="salary" class="form-label">Salary</label>
                     <input type="text" name="salary" id="salary" value="{{ $employee->salary }}"
                         class="form-control">
