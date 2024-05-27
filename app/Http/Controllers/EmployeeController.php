@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\Employee;
+use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +14,7 @@ class EmployeeController extends Controller
 {
     public function index(): View
     {
-        $employees = Employee::all();
+        $employees = User::all();
         return view('employees.index', compact('employees'));
     }
 
@@ -28,11 +28,12 @@ class EmployeeController extends Controller
         try {
             // Validate the incoming request data
             $validated = $request->validate([
-                'email' => 'required|email|unique:employees,email',
-                'username' => 'required|string|unique:employees,username',
+                'email' => 'required|email|unique:users,email',
+                'username' => 'required|string|unique:users,username',
                 'name' => 'required|string|max:255',
                 'password' => 'required|string|min:8',
                 'salary' => 'nullable|numeric',
+                'user_type' => 'nullable|string',
             ]);
 
             // Hash the password
@@ -42,7 +43,7 @@ class EmployeeController extends Controller
             $validated['leave_count'] = rand(2, 5);
 
             // Create the employee
-            $employee = Employee::create($validated);
+            $employee = User::create($validated);
 
             // Check if the employee creation was successful
             if ($employee) {
@@ -65,13 +66,13 @@ class EmployeeController extends Controller
 
     public function show(string $id): View
     {
-        $employee = Employee::find($id);
+        $employee = User::find($id);
         return view('employees.show')->with('employee', $employee);
     }
 
     public function edit(string $id): View
     {
-        $employee = Employee::find($id);
+        $employee = User::find($id);
         return view('employees.edit')->with('employee', $employee);
     }
 
@@ -79,13 +80,14 @@ class EmployeeController extends Controller
     {
         try {
             // Find the employee by ID
-            $employee = Employee::findOrFail($id);
+            $employee = User::findOrFail($id);
 
             // Validate the incoming request data
             $validated = $request->validate([
-                'email' => 'required|email|unique:employees,email,' . $id,
-                'username' => 'required|string|unique:employees,username,' . $id,
+                'email' => 'required|email|unique:users,email,' . $id,
+                'username' => 'required|string|unique:users,username,' . $id,
                 'name' => 'required|string|max:255',
+                'user_type' => 'required|in:employee,admin',
                 'salary' => 'nullable|numeric',
                 // Add validation rules for other fields (password, etc.)
             ]);
@@ -109,9 +111,10 @@ class EmployeeController extends Controller
 
 
 
+
     public function destroy(string $id): RedirectResponse
     {
-        Employee::destroy($id);
+        User::destroy($id);
         return redirect('employees')->with('flash_message', 'Employee Deleted!');
     }
 
@@ -126,4 +129,3 @@ class EmployeeController extends Controller
         return redirect('/');
     }
 }
-

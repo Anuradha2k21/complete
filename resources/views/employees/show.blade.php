@@ -12,12 +12,13 @@
                 <p class="card-text"><strong>Username:</strong> {{ $employee->username }}</p>
                 <p class="card-text"><strong>Email:</strong> {{ $employee->email }}</p>
                 <p class="card-text"><strong>Number of Leaves:</strong> {{ $employee->leave_count }}</p>
+                <p class="card-text"><strong>User Type:</strong> {{ $employee->user_type }}</p>
 
                 @if (!empty($employee->salary))
                     <p class="card-text"><strong>Basic Salary:</strong> Rs.{{ $employee->salary }}</p>
 
                     @php
-                        $new_salary = (int) $employee->salary;
+                        $total_salary = (int) $employee->salary;
                         $deduction = 0;
                         $additional_leaves = 0;
                     @endphp
@@ -26,9 +27,9 @@
                         @php
                             $additional_leaves = $employee->leave_count - 3;
                             $deduction = $additional_leaves * 2500;
-                            $new_salary -= $deduction;
-                            if ($new_salary < 0) {
-                                $new_salary = 0;
+                            $total_salary -= $deduction;
+                            if ($total_salary < 0) {
+                                $total_salary = 0;
                             }
                         @endphp
 
@@ -37,8 +38,8 @@
                                 - 3)
                                 =
                                 Rs.{{ $deduction }}</p>
-                            <p class="card-text"><strong>New Salary:</strong> Rs.{{ $employee->salary }} -
-                                Rs.{{ $deduction }} = Rs.{{ $new_salary }}</p>
+                            <p class="card-text"><strong>Total Salary:</strong> Rs.{{ $employee->salary }} -
+                                Rs.{{ $deduction }} = Rs.{{ $total_salary }}</p>
                         </div>
                     @endif
                 @endif

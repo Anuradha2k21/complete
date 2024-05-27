@@ -2,25 +2,23 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-
             <div class="col-md-9">
                 <div class="card">
-                    <div class="card-header text-center">
+                    <div class="card-header text-center d-flex justify-content-between align-items-center">
                         <h2>Employee Information</h2>
+                        <a href="http://127.0.0.1:8000/chatify" class="btn btn-primary">
+                            Chat <i class="fas fa-comments" aria-hidden="true"></i>
+                        </a>
                     </div>
-
-
-
-
                     <div class="card-body">
                         <div class="row">
-                            <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex justify-content-between align-items-start w-100">
                                 <a href="{{ url('/employees/create') }}" class="btn btn-success btn-lg"
                                     title="Add New Employee">
                                     <i class="fa fa-plus" aria-hidden="true"></i> Add New
                                 </a>
                                 <div class="col-md-6">
-                                    @if (session('flash_message') == 'Employee Addedd!' || session('flash_message') == 'Employee Updated!')
+                                    @if (session('flash_message') == 'Employee Added!' || session('flash_message') == 'Employee Updated!')
                                         <div id="flashMessage" class="alert alert-success justify-content-center"
                                             style="padding: 10px; border-radius: 5px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; width: fit-content;">
                                             {{ session('flash_message') }}
@@ -55,13 +53,7 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-                        <br />
-                        <br />
+                        <br /><br />
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -72,7 +64,7 @@
                                         <th>Email</th>
                                         <th>Salary</th>
                                         <th>Leave Count</th>
-                                        <th></th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -85,33 +77,33 @@
                                             <td>{{ $item->salary }}</td>
                                             <td class="{{ $item->leave_count > 3 ? 'fs-4 text-danger fw-bold' : '' }}">
                                                 {{ $item->leave_count }}</td>
-                                            </td>
-
                                             <td>
-                                                <a href="{{ url('/employees/' . $item->id) }}"
-                                                    title="View Employee"><button class="btn btn-info btn-primary"><i
-                                                            class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                                                <a href="{{ url('/employees/' . $item->id . '/edit') }}"
-                                                    title="Edit Employee"><button class="btn btn-primary btn-primary"><i
-                                                            class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                                        Edit</button></a>
-
-                                                <form method="POST" action="{{ url('/employees' . '/' . $item->id) }}"
-                                                    accept-charset="UTF-8" style="display:inline">
-                                                    {{ method_field('DELETE') }}
-                                                    {{ csrf_field() }}
-                                                    <button type="submit" class="btn btn-danger btn-primary"
-                                                        title="Delete Employee"
-                                                        onclick="return confirm(&quot;Confirm delete?&quot;)"><i
-                                                            class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-                                                </form>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ url('/employees/' . $item->id) }}" title="View Employee"
+                                                        class="btn btn-info mx-1">
+                                                        <i class="fa fa-eye" aria-hidden="true"></i> View
+                                                    </a>
+                                                    <a href="{{ url('/employees/' . $item->id . '/edit') }}"
+                                                        title="Edit Employee" class="btn btn-primary mx-1">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                    </a>
+                                                    <form method="POST" action="{{ url('/employees' . '/' . $item->id) }}"
+                                                        accept-charset="UTF-8" style="display:inline">
+                                                        {{ method_field('DELETE') }}
+                                                        {{ csrf_field() }}
+                                                        <button type="submit" class="btn btn-danger mx-1"
+                                                            title="Delete Employee"
+                                                            onclick="return confirm(&quot;Confirm delete?&quot;)">
+                                                            <i class="fa fa-trash-o" aria-hidden="true"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>

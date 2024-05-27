@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 #[Title('Admin Login Page')]
 class AdminLogin extends Component
@@ -26,13 +27,19 @@ class AdminLogin extends Component
         ];
 
         if (Auth::attempt($credentials)) {
-            session()->flash('message', 'You have successfully logged in!');
-
-            return redirect()->route('employees.index');
+            $user = Auth::user();
+            if ($user->user_type === 'admin') {
+                session()->flash('message', 'You have successfully logged in!');
+                return redirect()->route('employees.index');
+            } else {
+                Auth::logout();
+                session()->flash('error', 'Access denied. Only admins can log in.');
+            }
+        } else {
+            session()->flash('error', 'Invalid credentials!');
         }
-
-        session()->flash('error', 'Invalid credentials!');
     }
+
     public function render()
     {
         return view('livewire.admin-login');
